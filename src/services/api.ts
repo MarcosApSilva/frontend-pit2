@@ -3,10 +3,30 @@ import axios from 'axios'
 import { CustomerData } from '../interfaces/CustomerData'
 import { Snack } from '../interfaces/Snack'
 import { SnackData } from '../interfaces/SnackData'
+import { UserData } from '../interfaces/UserData'
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 })
+
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    //config.headers.Authorization = `Bearer ${token}`;
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
+});
+
+
+export const createSession = async (email: string, password: string) => {
+  return api.post('/auth/login', { email, password });
+};
+
 
 export const getCupcakes = () => api.get<SnackData[]>('/snacks?snack=cupcake')
 export const getBurgers = () => api.get<SnackData[]>('/snacks?snack=burger')
