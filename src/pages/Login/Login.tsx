@@ -66,9 +66,9 @@ const Login: React.FC = () => {
         <p>
           Não tem uma conta? <Link to="/register">Registrar</Link>
         </p>
-        <p>
+        {/*<p>
           Esqueci minha senha <Link to="/password">Clique aqui</Link>
-        </p>
+        </p>*/}
       </Form>
     </Container>
   );

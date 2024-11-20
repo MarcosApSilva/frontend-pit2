@@ -3,7 +3,7 @@ import axios from 'axios'
 import { CustomerData } from '../interfaces/CustomerData'
 import { Snack } from '../interfaces/Snack'
 import { SnackData } from '../interfaces/SnackData'
-import { UserData } from '../interfaces/UserData'
+//import { UserData } from '../interfaces/UserData'
 
 export const api = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -12,7 +12,7 @@ export const api = axios.create({
   },
 })
 
-
+/*
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -21,7 +21,7 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
-
+*/
 
 export const createSession = async (email: string, password: string) => {
   return api.post('/auth/login', { email, password });

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../../contexts/authContext2";
+import { AuthContext } from "../../contexts/authContext";
 //import * as yup from 'yup';
 //import { formLogin } from './styles'
 import styled from 'styled-components';

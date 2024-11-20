@@ -62,28 +62,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string): Promise<void> => {
     try {
       const response = await createSession(email, password);  
-      //const response = await api.post('/auth/login', { email, password });
-      //const data = await apiClient.post('/auth/login', { email, password });
-      console.log('Usuário logado:', response.data.user);
-      
-      const msg = JSON.stringify(response.data.message);
-      alert(`${msg}`);
-      
-      
-      //alert(`Usuario logado: ${response.data.user}`);
-	  
-	  //localStorage.setItem('token', data.token);
-      setIsAuthenticated(true);
-      //localStorage.setItem('token', response.data.token); // Armazena o token
+
+      localStorage.setItem('usuario', response.data.user.usuario);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       localStorage.setItem('token', response.data.token);
-
-      //api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-
+  
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       setUser(response.data.user);
+
+      const msg = JSON.stringify(response.data.user.usuario);
+      alert(`Seja bem vindo(a): ${msg}`);
+      setIsAuthenticated(true);
+
       navigate('/');
-
-
+  
     } catch (err: any) {
         if (!err?.response) {
           alert('Nenhuma resposta do Servidor!');
@@ -94,10 +86,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } else if (err.response?.status === 403) {
           const msg = JSON.stringify(err.response.data.message);
           alert(`${msg}`);
-                
-          
-          //alert(err.response.data.error);
-          } else {
+        } else {
           alert('Falha de login');
         }
       }
@@ -166,10 +155,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 
   const logout = (): void => {
-    console.log('Usuário desconectado');
+    //console.log('Usuário desconectado');
     setIsAuthenticated(false);
-    //localStorage.removeItem('token');
-
+    localStorage.removeItem('usuario');
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     api.defaults.headers.common['Authorization'] = '';
@@ -177,9 +165,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     navigate('/login');
   };
 
+
+  //authenticated: !!user,
   return (
     <AuthContext.Provider
-        value={{ isAuthenticated, 
+        value={{ isAuthenticated: !!user, 
                  user, 
                  loading,
                  login, 
